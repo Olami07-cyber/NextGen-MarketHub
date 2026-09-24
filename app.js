@@ -92,13 +92,7 @@ function nav() {
 }
 
 function page(x) {
-  $('#app').innerHTML = `<div class="shell">${nav()}${x}
-    <footer class="footer">
-      <div class="footer-wrap">
-        <div class="footer-copy">© 2026 NextGen MarketHub · Built for Local Commerce · All rights reserved.</div>
-      </div>
-    </footer>
-  </div>`;
+  $('#app').innerHTML = `<div class="shell">${nav()}${x}<footer class="footer">© 2026 NextGen MarketHub · Nigeria's local marketplace</footer></div>`;
 }
 
 function img(x, d, alt = 'MarketHub image') {
