@@ -1,0 +1,36 @@
+{
+  "name": "markethub",
+  "version": "1.0.0",
+  "description": "A self-contained marketplace MVP. It runs in any modern browser with no install step: open `index.html`.",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "prisma db seed",
+    "db:validate": "prisma validate",
+    "build": "node --check app.js && node --check src/server.js && node --check prisma/seed.js",
+    "test": "vitest run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "prisma": { "seed": "node prisma/seed.js" },
+  "dependencies": {
+    "@prisma/client": "^6.0.0",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "prisma": "^6.0.0",
+    "supertest": "^7.0.0",
+    "vitest": "^2.1.8"
+  }
+}
