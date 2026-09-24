@@ -70,24 +70,46 @@ function nav() {
       links = `<a href="#/stores">Stores</a><a href="#/products">Products</a><a href="#/orders">My Orders</a>`;
     }
 
-    actions = `${user.role === 'BUYER' ? `<a class="btn light" href="#/cart">Cart</a>` : ''}
+    actions = `${user.role === 'BUYER' ? `<a class="btn light" href="#/cart">🛒 Cart</a>` : ''}
       <a class="btn outline" href="#/account">${esc(user.name.split(' ')[0])}</a>
       <button class="btn" data-a="logout">Log out</button>`;
-  } else if (!isLanding) {
-    actions = `<a class="btn light" href="#/login">Log in</a><a class="btn" href="#/register">Join</a>`;
+  } else {
+    links = `<a href="#/">Home</a>`;
+    actions = `<a class="btn light" href="#/login">Log in</a><a class="btn" href="#/register">Join MarketHub</a>`;
   }
 
-  // FIX #1 — hamburger button for mobile nav
   return `<nav class="${navClass}">
-    <a class="brand" href="#/">
-      <img src="logo.png" alt="NextGen MarketHub logo">
-      NextGen <i>MarketHub</i>
-    </a>
-    <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false" data-a="hamburger">
-      <span></span><span></span><span></span>
-    </button>
-    <div class="navlinks" id="mobile-nav">${links}</div>
-    <div class="actions desktop-actions">${actions}</div>
+    <div class="nav-container">
+      <a class="brand" href="#/">
+        <img src="logo.png" alt="NextGen MarketHub logo">
+        <span>NextGen <i>MarketHub</i></span>
+      </a>
+
+      <div class="desktop-nav">
+        <div class="desktop-links">${links}</div>
+        <div class="desktop-actions">${actions}</div>
+      </div>
+
+      <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false" data-a="hamburger">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <div class="mobile-sidebar" id="mobile-nav">
+      <div class="mobile-sidebar-inner">
+        <div class="mobile-nav-links">${links}</div>
+        <div class="mobile-nav-actions">
+          ${user ? `
+            ${user.role === 'BUYER' ? `<a class="btn light full-width" href="#/cart">🛒 View Cart</a>` : ''}
+            <a class="btn outline full-width" href="#/account">Account (${esc(user.name.split(' ')[0])})</a>
+            <button class="btn full-width" data-a="logout">Log out</button>
+          ` : `
+            <a class="btn full-width" href="#/login">Log in</a>
+            <a class="btn light full-width" href="#/register">Join MarketHub</a>
+          `}
+        </div>
+      </div>
+    </div>
   </nav>`;
 }
 
@@ -1249,8 +1271,8 @@ document.addEventListener('click', async e => {
     $('#auth-modal')?.remove();
   }
 
-  // FIX #1 — close mobile nav when any nav link inside it is tapped
-  if (e.target.closest('#mobile-nav a')) {
+  // Close mobile nav when any nav link or action inside it is tapped, or backdrop clicked
+  if (e.target.closest('#mobile-nav a, #mobile-nav button') || e.target.classList.contains('mobile-sidebar')) {
     const nav = document.getElementById('mobile-nav');
     const btn = document.querySelector('.hamburger');
     if (nav) nav.classList.remove('open');
