@@ -48,8 +48,8 @@ function badge(x) {
 
 function empty(x) {
   return `<div class="empty">
-    <div class="empty-icon">🍃</div>
-    <h3>No Items Found</h3>
+    <div class="empty-icon">—</div>
+    <h3>Nothing here yet</h3>
     <p>${x}</p>
   </div>`;
 }
@@ -70,7 +70,7 @@ function nav() {
       links = `<a href="#/stores">Stores</a><a href="#/products">Products</a><a href="#/orders">My Orders</a>`;
     }
 
-    actions = `${user.role === 'BUYER' ? `<a class="btn light" href="#/cart">🛒 Cart</a>` : ''}
+    actions = `${user.role === 'BUYER' ? `<a class="btn light" href="#/cart">Cart</a>` : ''}
       <a class="btn outline" href="#/account">${esc(user.name.split(' ')[0])}</a>
       <button class="btn" data-a="logout">Log out</button>`;
   } else {
@@ -100,7 +100,7 @@ function nav() {
         <div class="mobile-nav-links">${links}</div>
         <div class="mobile-nav-actions">
           ${user ? `
-            ${user.role === 'BUYER' ? `<a class="btn light full-width" href="#/cart">🛒 View Cart</a>` : ''}
+            ${user.role === 'BUYER' ? `<a class="btn light full-width" href="#/cart">View Cart</a>` : ''}
             <a class="btn outline full-width" href="#/account">Account (${esc(user.name.split(' ')[0])})</a>
             <button class="btn full-width" data-a="logout">Log out</button>
           ` : `
@@ -114,7 +114,18 @@ function nav() {
 }
 
 function page(x) {
-  $('#app').innerHTML = `<div class="shell">${nav()}${x}<footer class="footer">© 2026 NextGen MarketHub · Nigeria's local marketplace</footer></div>`;
+  $('#app').innerHTML = `<div class="shell">${nav()}${x}<footer class="footer">
+    <div class="footer-wrap">
+      <div class="footer-brand">NextGen <i>MarketHub</i></div>
+      <p class="footer-desc">A local marketplace connecting buyers with trusted neighbourhood stores across Nigeria.</p>
+      <div class="footer-links">
+        <a href="#/stores">Stores</a>
+        <a href="#/products">Products</a>
+        <a href="#/login">Log in</a>
+      </div>
+      <p class="footer-copy">© 2026 NextGen MarketHub. All rights reserved.</p>
+    </div>
+  </footer></div>`;
 }
 
 function img(x, d, alt = 'MarketHub image') {
@@ -144,12 +155,12 @@ function sc(s) {
   return `<article class="vintage-card">
     <div class="vintage-store-img">
       ${img(s.imageUrl, '🏛️', s.name)}
-      <span class="vintage-badge">Verified Merchant</span>
+      <span class="vintage-badge">Verified</span>
     </div>
     <div class="vintage-body">
-      <div class="vintage-rating">✓ Verified Local Merchant</div>
+      <div class="vintage-rating">Verified seller</div>
       <h3>${esc(s.name)}</h3>
-      <p class="loc">📍 ${esc(s.city)}, ${esc(s.state)}</p>
+      <p class="loc">${esc(s.city)}, ${esc(s.state)}</p>
       <p class="desc">${esc(s.description)}</p>
       <div class="vintage-footer">
         <span class="muted" style="font-size:12px">${s.products?.length || 'Curated'} items</span>
@@ -168,32 +179,32 @@ async function pub(q = '') {
 
 async function home() {
   if (!user) {
-    // Guest Landing Page: Rich green background, big logo with rhyming backdrop, CTAs, no store grid
+    // Guest Landing Page
     page(`<main class="landing-wrap">
       <div class="landing-hero">
         <img class="landing-logo" src="logo.png" alt="NextGen MarketHub logo">
-        <span class="landing-eyebrow">Nigeria’s local marketplace</span>
+        <span class="landing-eyebrow">Local marketplace</span>
         <h1>NextGen <em>MarketHub</em></h1>
-        <p class="landing-lead">Find good things, close to home. Connect directly with trusted neighbourhood stores, quality products, and local commerce close to you.</p>
+        <p class="landing-lead">Buy and sell locally. Browse stores near you, find what you need, and connect with sellers in your neighbourhood.</p>
         <div class="landing-cta">
           <a class="btn big" href="#/login">Log in</a>
-          <a class="btn big outline" href="#/register">Join MarketHub</a>
+          <a class="btn big outline" href="#/register">Create account</a>
         </div>
         <div class="landing-pillars">
           <div class="landing-pillar">
-            <span class="landing-pillar-icon">🏪</span>
-            <h4>Verified Local Stores</h4>
-            <p>Shop with confidence from verified local merchants and vintage boutiques in your city.</p>
+            <span class="landing-pillar-icon">Local stores</span>
+            <h4>Verified Sellers</h4>
+            <p>Every store on MarketHub is reviewed and verified before going live.</p>
           </div>
           <div class="landing-pillar">
-            <span class="landing-pillar-icon">🛡️</span>
-            <h4>Safe & Secure Orders</h4>
-            <p>Reliable order confirmations, seller communication, and direct checkout.</p>
+            <span class="landing-pillar-icon">Orders</span>
+            <h4>Simple Checkout</h4>
+            <p>Add to cart, place your order, and the seller handles the rest.</p>
           </div>
           <div class="landing-pillar">
-            <span class="landing-pillar-icon">⚡</span>
-            <h4>Neighbourhood Speed</h4>
-            <p>Enjoy quick order fulfillment and local support close to where you live.</p>
+            <span class="landing-pillar-icon">Nearby</span>
+            <h4>Close to You</h4>
+            <p>Shop from stores in your city. Less shipping time, more convenience.</p>
           </div>
         </div>
       </div>
@@ -206,9 +217,9 @@ async function home() {
   page(`<main class="member-home">
     <div class="member-hero">
       <div>
-        <span class="eyebrow" style="color:#8ee0a9">Member Marketplace</span>
-        <h1>Welcome back, <em>${esc(user.name.split(' ')[0])}</em>!</h1>
-        <p>Explore curated vintage online stores, neighbourhood artisans, and fresh local goods.</p>
+        <span class="eyebrow" style="color:#8cc9a0">Dashboard</span>
+        <h1>Welcome back, <em>${esc(user.name.split(' ')[0])}</em></h1>
+        <p>Browse stores, check out products, or manage your orders.</p>
         <div class="member-actions">
           ${user.role === 'BUYER' ? `
             <a class="btn" href="#/stores">Browse All Stores</a>
@@ -243,11 +254,11 @@ async function home() {
 
     <div class="section-head">
       <div>
-        <span class="eyebrow">Curated Collections</span>
-        <h2>Featured Vintage & Local Stores</h2>
-        <p>Discover handpicked online boutiques and trusted local shops.</p>
+        <span class="eyebrow">Stores</span>
+        <h2>Local Stores</h2>
+        <p>Browse stores near you.</p>
       </div>
-      <a class="text-link" href="#/stores">Explore all stores →</a>
+      <a class="text-link" href="#/stores">See all stores →</a>
     </div>
     <div class="grid stores" style="margin-bottom:50px">
       ${stores.map(sc).join('') || empty('No stores listed currently.')}
@@ -255,11 +266,11 @@ async function home() {
 
     <div class="section-head">
       <div>
-        <span class="eyebrow">Top Listings</span>
-        <h2>Trending Marketplace Products</h2>
-        <p>Quality finds from verified sellers in Nigeria.</p>
+        <span class="eyebrow">Products</span>
+        <h2>Recent Products</h2>
+        <p>Latest items from sellers across Nigeria.</p>
       </div>
-      <a class="text-link" href="#/products">Explore all products →</a>
+      <a class="text-link" href="#/products">See all products →</a>
     </div>
     <div class="grid products">
       ${products.map(pc).join('') || empty('No products available currently.')}
@@ -274,9 +285,9 @@ async function list(k) {
   page(`<main class="page">
     <div class="section-head">
       <div>
-        <span class="eyebrow">Marketplace Directory</span>
-        <h1 class="page-title">${k === 'stores' ? 'Explore Local & Vintage Stores' : 'Browse Quality Products'}</h1>
-        <p class="muted">${k === 'stores' ? 'Connect with trusted local retailers and curated boutique shops.' : 'Discover authentic products verified by local merchants.'}</p>
+        <span class="eyebrow">${k === 'stores' ? 'Stores' : 'Products'}</span>
+        <h1 class="page-title">${k === 'stores' ? 'All Stores' : 'All Products'}</h1>
+        <p class="muted">${k === 'stores' ? 'Local stores available on MarketHub.' : 'Products listed by verified sellers.'}</p>
       </div>
     </div>
     <form class="filterbar" data-f="${k}">
@@ -302,9 +313,8 @@ async function show(k, id) {
         <div class="vintage-store-icon">${img(detail.imageUrl, '🏛️', detail.name)}</div>
         <div>
           <div class="vintage-store-tags">
-            <span class="vintage-store-tag">Est. 2024</span>
-            <span class="vintage-store-tag">✓ Verified Merchant</span>
-            <span class="vintage-store-tag">📍 ${esc(detail.city)}, ${esc(detail.state)}</span>
+            <span class="vintage-store-tag">Verified</span>
+            <span class="vintage-store-tag">${esc(detail.city)}, ${esc(detail.state)}</span>
           </div>
           <h1>${esc(detail.name)}</h1>
           <p class="story">${esc(detail.description)}</p>
@@ -315,9 +325,9 @@ async function show(k, id) {
       </div>
       <div class="section-head">
         <div>
-          <span class="eyebrow">Curated Collection</span>
-          <h2>Store Catalog</h2>
-          <p>Explore exclusive pieces and items from this merchant.</p>
+          <span class="eyebrow">Products</span>
+          <h2>Store Products</h2>
+          <p>Items available from this store.</p>
         </div>
         <span class="muted">${detail.products.length} product(s)</span>
       </div>
@@ -358,13 +368,13 @@ async function auth(k) {
       <main class="auth">
         <div class="auth-header">
           <img src="logo.png" alt="NextGen MarketHub logo" class="auth-logo">
-          <h1>Welcome back</h1>
-          <p class="muted">Log in to your account to continue shopping or managing your store.</p>
+          <h1>Log in</h1>
+          <p class="muted">Welcome back. Sign in to your MarketHub account.</p>
         </div>
         <form class="form" data-f="login">
           <label>Email<input class="input" required type="email" name="email" placeholder="name@example.com"></label>
           <label>Password<input class="input" required minlength="8" type="password" name="password" placeholder="••••••••"></label>
-          <button class="btn">Log in to Account</button>
+          <button class="btn">Log in</button>
         </form>
         <p class="muted" style="margin-top:22px;text-align:center">Don't have an account? <a class="text-link" href="#/register">Join MarketHub</a></p>
       </main>
@@ -374,8 +384,8 @@ async function auth(k) {
       <main class="auth">
         <div class="auth-header">
           <img src="logo.png" alt="NextGen MarketHub logo" class="auth-logo">
-          <h1>Join MarketHub</h1>
-          <p class="muted">Create a buyer account or register your store as a local merchant.</p>
+          <h1>Create account</h1>
+          <p class="muted">Sign up as a buyer or seller.</p>
         </div>
         <form class="form" data-f="register">
           <label>Full name<input class="input" required name="name" placeholder="e.g. Maya Johnson"></label>
@@ -384,7 +394,7 @@ async function auth(k) {
           <label>Email<input class="input" required type="email" name="email" placeholder="name@example.com"></label>
           <label>Password<input class="input" required minlength="8" type="password" name="password" placeholder="At least 8 characters"></label>
           <label>Confirm password<input class="input" required type="password" name="confirm" placeholder="Confirm password"></label>
-          <button class="btn">Create MarketHub Account</button>
+          <button class="btn">Create account</button>
         </form>
         <p class="muted" style="margin-top:22px;text-align:center">Already have an account? <a class="text-link" href="#/login">Log in</a></p>
       </main>
@@ -469,55 +479,55 @@ async function accountPage() {
     <div class="buyer-dashboard">
       <div class="buyer-hero">
         <div class="buyer-avatar-wrap">
-          <div class="buyer-avatar">🛍️</div>
+          <div class="buyer-avatar">${esc(user.name.charAt(0))}</div>
         </div>
         <div class="buyer-info">
-          <div class="buyer-badge-tag">⭐ Certified Buyer Profile · Member</div>
+          <div class="buyer-badge-tag">Buyer account</div>
           <h1>Welcome, ${esc(user.name)}!</h1>
-          <p>Email: <b>${esc(user.email)}</b> · Phone: <b>${esc(user.phone || 'Not provided')}</b> · Member of NextGen MarketHub</p>
+          <p>${esc(user.email)} · ${esc(user.phone || 'No phone added')}</p>
         </div>
         <div style="display:flex;gap:12px;flex-wrap:wrap">
-          <a class="btn light" href="#/cart">🛒 View Cart (${cartCount})</a>
-          <a class="btn" href="#/stores" style="background:#ffd166;color:#2b1800;border:0;font-weight:800">🏪 Shop Stores</a>
+          <a class="btn light" href="#/cart">Cart (${cartCount})</a>
+          <a class="btn" href="#/stores">Browse Stores</a>
         </div>
       </div>
 
       <div class="buyer-stats">
         <div class="buyer-stat-card standing">
           <div class="buyer-stat-top">
-            <small>Account Standing</small>
-            <div class="buyer-stat-icon">⭐</div>
+            <small>Status</small>
+            <div class="buyer-stat-icon">●</div>
           </div>
           <b>${badge(user.status)}</b>
-          <div class="stat-desc">Full shopping privileges active</div>
+          <div class="stat-desc">Account active</div>
         </div>
 
         <div class="buyer-stat-card cart">
           <div class="buyer-stat-top">
-            <small>Cart Items</small>
-            <div class="buyer-stat-icon">🛍️</div>
+            <small>Cart</small>
+            <div class="buyer-stat-icon">●</div>
           </div>
           <b>${cartCount} item(s)</b>
-          <div class="stat-desc">Items ready in your shopping bag</div>
+          <div class="stat-desc">Items in cart</div>
         </div>
 
         <div class="buyer-stat-card orders">
           <div class="buyer-stat-top">
-            <small>Orders Placed</small>
-            <div class="buyer-stat-icon">📦</div>
+            <small>Orders</small>
+            <div class="buyer-stat-icon">●</div>
           </div>
           <b>${ordersData.length}</b>
-          <div class="stat-desc">Total store order transactions</div>
+          <div class="stat-desc">Total orders placed</div>
         </div>
       </div>
 
       <div class="section-head">
         <div>
-          <span class="eyebrow">Order Management</span>
-          <h2>Your Recent Orders</h2>
-          <p>Track delivery updates and order status from local merchants.</p>
+          <span class="eyebrow">Orders</span>
+          <h2>Recent Orders</h2>
+          <p>Your latest order activity.</p>
         </div>
-        <a class="text-link" href="#/orders">View all orders (${ordersData.length}) →</a>
+        <a class="text-link" href="#/orders">All orders (${ordersData.length}) →</a>
       </div>
       ${ordersData.length ? `
         <div class="tablewrap">
@@ -541,11 +551,11 @@ async function accountPage() {
       ${catalogProducts.length ? `
         <div class="section-head" style="margin-top:20px">
           <div>
-            <span class="eyebrow">Recommended For You</span>
-            <h2>Trending Vintage & Local Finds</h2>
-            <p>Popular products handpicked by local merchants.</p>
+            <span class="eyebrow">Products</span>
+            <h2>You might like</h2>
+            <p>Popular items from local sellers.</p>
           </div>
-          <a class="text-link" href="#/products">View all products →</a>
+          <a class="text-link" href="#/products">See all →</a>
         </div>
         <div class="grid products">
           ${catalogProducts.slice(0, 4).map(pc).join('')}
@@ -644,18 +654,18 @@ async function seller(section = 'home') {
     <div class="seller-dashboard">
       <div class="seller-hero">
         <div class="seller-hero-left">
-          <div class="seller-store-seal">🏛️</div>
+          <div class="seller-store-seal">${esc(s.name.charAt(0))}</div>
           <div class="seller-hero-info">
             <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
               <span class="seller-live-pill"><span class="seller-live-dot"></span> Store Live on MarketHub</span>
               ${badge(s.status)}
             </div>
             <h1>${esc(s.name)}</h1>
-            <p>📍 ${esc(s.address)}, ${esc(s.city)}, ${esc(s.state)} · 📞 ${esc(s.phone)} · Owner: <b>${esc(user.name)}</b></p>
+            <p>${esc(s.address)}, ${esc(s.city)}, ${esc(s.state)} · ${esc(s.phone)}</p>
           </div>
         </div>
         <div class="seller-quickbar">
-          <a class="btn" style="background:#ffd166;color:#2a1800;border:0;font-weight:800" href="#/stores/${s.id}">Storefront ↗</a>
+          <a class="btn light" href="#/stores/${s.id}">View Storefront</a>
           ${s.status === 'APPROVED' ? `<a class="btn" href="#/seller/add">+ Add Product</a>` : ''}
           <a class="btn light" href="#/seller/orders">Orders (${pendingOrders.length})</a>
         </div>
@@ -665,47 +675,47 @@ async function seller(section = 'home') {
         <div class="seller-kpi-card revenue">
           <div class="seller-kpi-top">
             <small>Total Revenue</small>
-            <div class="seller-kpi-icon">💰</div>
+            <div class="seller-kpi-icon">₦</div>
           </div>
           <b>${money(revenue)}</b>
-          <div class="stat-desc">Earnings from completed orders</div>
+          <div class="stat-desc">From completed orders</div>
         </div>
 
         <div class="seller-kpi-card products">
           <div class="seller-kpi-top">
             <small>Active Inventory</small>
-            <div class="seller-kpi-icon">📦</div>
+            <div class="seller-kpi-icon">#</div>
           </div>
           <b>${s.products.length} item(s)</b>
-          <div class="stat-desc">Live catalog items in your store</div>
+          <div class="stat-desc">Listed in your store</div>
         </div>
 
         <div class="seller-kpi-card pending">
           <div class="seller-kpi-top">
             <small>Orders to Fulfill</small>
-            <div class="seller-kpi-icon">⏳</div>
+            <div class="seller-kpi-icon">!</div>
           </div>
           <b>${pendingOrders.length}</b>
-          <div class="stat-desc">Pending customer order fulfillment</div>
+          <div class="stat-desc">Need your attention</div>
         </div>
 
         <div class="seller-kpi-card orders">
           <div class="seller-kpi-top">
             <small>Total Store Orders</small>
-            <div class="seller-kpi-icon">📈</div>
+            <div class="seller-kpi-icon">#</div>
           </div>
           <b>${ordersList.length}</b>
-          <div class="stat-desc">Lifetime customer transactions</div>
+          <div class="stat-desc">All time</div>
         </div>
       </div>
 
       <div class="section-head">
         <div>
-          <span class="eyebrow">Inventory Overview</span>
-          <h2>Quick Stock Management</h2>
-          <p>Review current listings, adjust quantities, or add new stock.</p>
+          <span class="eyebrow">Inventory</span>
+          <h2>Your Products</h2>
+          <p>Manage stock and listings.</p>
         </div>
-        <a class="text-link" href="#/seller/products">View all products (${s.products.length}) →</a>
+        <a class="text-link" href="#/seller/products">All products (${s.products.length}) →</a>
       </div>
       <div class="grid products">
         ${s.products.slice(0, 4).map(sellerProductCard).join('') || empty('No products listed yet. Click "+ Add Product" to get started.')}
@@ -713,9 +723,9 @@ async function seller(section = 'home') {
 
       <div class="section-head" style="margin-top:20px">
         <div>
-          <span class="eyebrow">Fulfillment Center</span>
-          <h2>Recent Customer Orders</h2>
-          <p>Update order delivery status to notify buyers in real time.</p>
+          <span class="eyebrow">Orders</span>
+          <h2>Recent Orders</h2>
+          <p>Update order status for your customers.</p>
         </div>
         <a class="text-link" href="#/seller/orders">All orders (${ordersList.length}) →</a>
       </div>
@@ -768,14 +778,14 @@ function adminHeader(activeTab, stats = {}) {
   return `
     <div class="admin-hero">
       <div class="admin-hero-left">
-        <div class="admin-badge-icon">🛡️</div>
+        <div class="admin-badge-icon">A</div>
         <div class="admin-hero-title">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
-            <span class="eyebrow" style="color:#8ee0a9;letter-spacing:1.5px">Marketplace Administration</span>
-            <span class="admin-system-status"><span class="admin-system-dot"></span> System Live</span>
+            <span class="eyebrow" style="color:#8cc9a0">Admin</span>
+            <span class="admin-system-status"><span class="admin-system-dot"></span> Online</span>
           </div>
-          <h1>MarketHub Admin Portal</h1>
-          <p>Real-time governance, merchant verifications, product moderation, and order monitoring.</p>
+          <h1>Admin Dashboard</h1>
+          <p>Manage sellers, stores, products, and orders.</p>
         </div>
       </div>
     </div>
@@ -818,7 +828,7 @@ async function admin(k = 'home') {
           <div class="admin-kpi-card sellers">
             <div class="admin-kpi-top">
               <small>Total Sellers</small>
-              <div class="admin-kpi-icon">👥</div>
+              <div class="admin-kpi-icon">#</div>
             </div>
             <div class="admin-kpi-val">${stats.sellers}</div>
             <div class="admin-kpi-sub">
@@ -829,7 +839,7 @@ async function admin(k = 'home') {
           <div class="admin-kpi-card stores">
             <div class="admin-kpi-top">
               <small>Total Stores</small>
-              <div class="admin-kpi-icon">🏛️</div>
+              <div class="admin-kpi-icon">#</div>
             </div>
             <div class="admin-kpi-val">${stats.stores}</div>
             <div class="admin-kpi-sub">
@@ -840,22 +850,22 @@ async function admin(k = 'home') {
           <div class="admin-kpi-card products">
             <div class="admin-kpi-top">
               <small>Marketplace Listings</small>
-              <div class="admin-kpi-icon">📦</div>
+              <div class="admin-kpi-icon">#</div>
             </div>
             <div class="admin-kpi-val">${stats.products}</div>
             <div class="admin-kpi-sub">
-              <span class="muted">Live catalog products</span>
+              <span class="muted">Active listings</span>
             </div>
           </div>
 
           <div class="admin-kpi-card orders">
             <div class="admin-kpi-top">
               <small>Platform Orders</small>
-              <div class="admin-kpi-icon">🛒</div>
+              <div class="admin-kpi-icon">#</div>
             </div>
             <div class="admin-kpi-val">${stats.orders}</div>
             <div class="admin-kpi-sub">
-              <span class="muted">Processed transactions</span>
+              <span class="muted">Total transactions</span>
             </div>
           </div>
         </div>
@@ -863,7 +873,7 @@ async function admin(k = 'home') {
         <div class="admin-split">
           <div class="admin-card">
             <div class="admin-card-head">
-              <h3>⏳ Pending Seller Approvals (${pendingSellers.length})</h3>
+              <h3>Pending Sellers (${pendingSellers.length})</h3>
               <a class="text-link" href="#/admin/sellers">Manage all →</a>
             </div>
             <div class="admin-card-body">
@@ -887,17 +897,17 @@ async function admin(k = 'home') {
 
           <div class="admin-card">
             <div class="admin-card-head">
-              <h3>🏪 Pending Store Approvals (${pendingStores.length})</h3>
+              <h3>Pending Stores (${pendingStores.length})</h3>
               <a class="text-link" href="#/admin/stores">Manage all →</a>
             </div>
             <div class="admin-card-body">
               ${pendingStores.length ? pendingStores.map(st => `
                 <div class="admin-item-row">
                   <div class="admin-user-cell">
-                    <div class="admin-avatar-chip store">🏛️</div>
+                    <div class="admin-avatar-chip store">${adminInitials(st.name)}</div>
                     <div>
                       <b>${esc(st.name)}</b>
-                      <div class="muted" style="font-size:12.5px">Owner: ${esc(st.seller?.fullName || 'Seller')} · 📍 ${esc(st.city)}, ${esc(st.state)}</div>
+                      <div class="muted" style="font-size:12.5px">Owner: ${esc(st.seller?.fullName || 'Seller')} · ${esc(st.city)}, ${esc(st.state)}</div>
                     </div>
                   </div>
                   <div style="display:flex;gap:6px">
